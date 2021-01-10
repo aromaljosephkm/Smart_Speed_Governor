@@ -20,12 +20,16 @@ GPIO_ECHO    = 18
 GPIO_GREEN   = 17
 GPIO_YELLOW  = 27
 GPIO_RED     = 22
+GPIO_IN_1    = 23
+GPIO_IN_2    = 24
 
 GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
 GPIO.setup(GPIO_GREEN, GPIO.OUT)
 GPIO.setup(GPIO_YELLOW, GPIO.OUT)
 GPIO.setup(GPIO_RED, GPIO.OUT)
+GPIO.setup(GPIO_IN_1, GPIO.OUT)
+GPIO.setup(GPIO_IN_2, GPIO.OUT)
 
 def greenLight():
     GPIO.output(GPIO_GREEN, GPIO.HIGH)
@@ -162,8 +166,41 @@ def drowsinessChecker():
     cv2.destroyAllWindows()
     vs.stop()
 
+def motorController():
+    def set(property, value):
+        try:
+            f = open("/sys/class/rpi-pwm/pwm0/" + property, 'w')
+            f.write(value)
+            f.close()	
+        except:
+            print("Error writing to: " + property + " value: " + value)
+    
+    set("delayed", "0")
+    set("mode", "pwm")
+    set("frequency", "500")
+    set("active", "1")
+
+    def clockwise():
+        GPIO.output(GPIO_IN_1, True)    
+        GPIO.output(GPIO_IN_2, False)
+
+    def counter_clockwise():
+        GPIO.output(GPIO_IN_1, False)
+        GPIO.output(GPIO_IN_2, True)
+
+    clockwise()
+
+    while True:
+        cmd = input("Command, f/r 0..9, E.g. f5 :")
+        direction = cmd[0]
+        if direction == "f":
+            clockwise()
+        else: 
+            counter_clockwise()
+        speed = int(cmd[1]) * 11
+        set("duty", str(speed))
+
 
 if __name__ == "__main__":
     _thread.start_new_thread(speedGovernor, ())
     _thread.start_new_thread(drowsinessChecker, ())
-    
