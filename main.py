@@ -71,10 +71,16 @@ def speedGovernor():
 
         if distance > 50:
             greenLight()
+            motorController(8)
         elif 50 <= distance >= 20:
             yellowLight()
+            motorController(5)
         elif distance < 20:
             redLight()
+            motorController(2)
+        elif distance < 5:
+            redLight()
+            motorController(0)
 
 def sound_alarm(path):
 	playsound.playsound(path)
@@ -166,41 +172,40 @@ def drowsinessChecker():
     cv2.destroyAllWindows()
     vs.stop()
 
-def motorController():
-    def set(property, value):
-        try:
-            f = open("/sys/class/rpi-pwm/pwm0/" + property, 'w')
-            f.write(value)
-            f.close()	
-        except:
-            print("Error writing to: " + property + " value: " + value)
-    
-    set("delayed", "0")
-    set("mode", "pwm")
-    set("frequency", "500")
-    set("active", "1")
+def set(property, value):
+    try:
+        f = open("/sys/class/rpi-pwm/pwm0/" + property, 'w')
+        f.write(value)
+        f.close()	
+    except:
+        print("Error writing to: " + property + " value: " + value)
 
-    def clockwise():
-        GPIO.output(GPIO_IN_1, True)    
-        GPIO.output(GPIO_IN_2, False)
+def clockwise():
+    GPIO.output(GPIO_IN_1, True)    
+    GPIO.output(GPIO_IN_2, False)
 
-    def counter_clockwise():
-        GPIO.output(GPIO_IN_1, False)
-        GPIO.output(GPIO_IN_2, True)
+'''def counter_clockwise():
+    GPIO.output(GPIO_IN_1, False)
+    GPIO.output(GPIO_IN_2, True)'''
 
-    clockwise()
-
+def motorController(cmd):
     while True:
-        cmd = input("Command, f/r 0..9, E.g. f5 :")
+        '''cmd = input("Command, f/r 0..9, E.g. f5 :")
         direction = cmd[0]
         if direction == "f":
             clockwise()
         else: 
             counter_clockwise()
-        speed = int(cmd[1]) * 11
+        speed = int(cmd[1]) * 11'''
+        speed = int(cmd) * 11
         set("duty", str(speed))
 
 
 if __name__ == "__main__":
+    set("delayed", "0")
+    set("mode", "pwm")
+    set("frequency", "500")
+    set("active", "1")
+    clockwise()
     _thread.start_new_thread(speedGovernor, ())
     _thread.start_new_thread(drowsinessChecker, ())
