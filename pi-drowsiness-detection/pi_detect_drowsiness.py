@@ -66,8 +66,7 @@ while True:
 			if COUNTER >= EYE_AR_CONSEC_FRAMES:
 				if not ALARM_ON:
 					ALARM_ON = True
-					if alarm != "":
-    					_thread.start_new_thread(sound_alarm, (alarm))
+    				_thread.start_new_thread(sound_alarm, (alarm))
 				cv2.putText(frame, "DROWSINESS ALERT!", (10, 30),
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
 		else:
