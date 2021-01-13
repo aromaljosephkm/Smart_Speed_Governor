@@ -94,7 +94,7 @@ def eye_aspect_ratio(eye):
 
 def drowsinessChecker():
     shapePredictor = "shape_predictor_68_face_landmarks.dat"
-    alarmFile = "alarm.wav"
+    alarmFile = "alarm.WAV"
     webcam = 0
 
     EYE_AR_THRESH = 0.3
