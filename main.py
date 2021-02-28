@@ -13,15 +13,15 @@ import cv2
 
 GPIO.setwarnings(False)
 GPIO.cleanup()
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)
 
-GPIO_TRIGGER = 4
-GPIO_ECHO    = 18
-GPIO_GREEN   = 17
-GPIO_YELLOW  = 27
-GPIO_RED     = 22
-GPIO_IN_1    = 23
-GPIO_IN_2    = 24
+GPIO_TRIGGER = 7
+GPIO_ECHO    = 12
+GPIO_GREEN   = 11
+GPIO_YELLOW  = 13
+GPIO_RED     = 15
+GPIO_IN_1    = 16
+GPIO_IN_2    = 18
 
 GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
