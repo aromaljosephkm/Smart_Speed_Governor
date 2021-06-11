@@ -21,6 +21,7 @@ GPIO_ECHO    = 12
 GPIO_GREEN   = 11
 GPIO_YELLOW  = 13
 GPIO_RED     = 15
+GPIO_MotorA  = 16
 GPIO_MotorB  = 18
 GPIO_MotorE  = 32
 GPIO_Temp    = 40
